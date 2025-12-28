@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+}
+
+/// User model stores minimal user information., relies on Clerk for authentication and user management.
+model User {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId String        @unique // Clerk user ID
+  rssFeeds    RssFeed[]
+  newsletters Newsletter[]
+  settings    UserSettings?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+/// UserSettings model stores user preferences  for newsletter generation.
+model UserSettings {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  //Basic settings
+  newsletterName String?
+  description    String?
+  targetAudience String?
+  defaultTone    String?
+
+  //Branding settings
+  brandVoice   String?
+  companyNaeme String?
+  industry     String?
+
+  //Addtional Information
+  disclaimerText String?
+  defaultTags    String[]
+  customFooter   String?
+  senderName     String?
+  senderEmail    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// RssFeed model represents an RSS feed information and metadata.
+model RssFeed {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String       @db.ObjectId
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url         String
+  title       String?
+  description String?
+  link        String?
+  imageUrl    String?
+  language    String?
+  lastFetched DateTime?
+  articles    RssArticle[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([userId, url])
+  @@index([userId])
+}
+
+/// RssArticle model stores individual articles fetched from RSS feeds. with duplication
+/// Articles are duplicated across all users - same article appears once in database
+model RssArticle {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  feedId        String    @db.ObjectId
+  feed          RssFeed   @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  guid          String    @unique // Unique identifier from the feed
+  sourceFeedIds String[]  @db.ObjectId // List of feed IDs that have this article
+  title         String
+  link          String
+  content       String?
+  summary       String?
+  pubDate       DateTime?
+  author        String?
+  categories    String[] // Array of categories tags
+  imageUrl      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([feedId])
+  @@index([pubDate])
+  @@index([feedId, pubDate])
+  @@index([sourceFeedIds])
+}
+
+/// Newsletter model represents a generated newsletter with all AI-generated content.
+model Newsletter {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String   @db.ObjectId
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  suggestedTitles       String[]
+  suggestedSubjectLines String[]
+  body                  String
+  topAnnouncements      String[]
+  additionalInfo        String?
+  startDate             DateTime
+  endDate               DateTime
+  userInput             String?
+  feedsUsed             String[] @db.ObjectId
+
+  // for generation
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, createdAt])
+  @@index([createdAt])
+}
