@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/dashboard/page-header";
+import { RssFeedManager } from "@/components/dashboard/rss-feed-manager";
 import { Sparkles } from "lucide-react";
 
 export default function Dashboard() {
@@ -15,7 +16,9 @@ export default function Dashboard() {
         {/* Main Content - Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - RSS Feed Manager */}
-          <div>{/* <RssFeedManager /> */}</div>
+          <div>
+            <RssFeedManager />
+          </div>
 
           {/* Right Column - Newsletter Generator */}
           <div>{/* <NewsletterGenerator /> */}</div>
