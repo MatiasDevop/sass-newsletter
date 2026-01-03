@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 /// User model stores minimal user information., relies on Clerk for authentication and user management.
