@@ -2,7 +2,6 @@
 
 import { openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
-import { z } from "zod";
 import { checkIsProUser, getCurrentUser } from "@/lib/auth/helpers";
 import {
   buildArticleSummaries,
@@ -11,26 +10,13 @@ import {
 import { prepareFeedsAndArticles } from "@/lib/rss/feed-refresh";
 import { createNewsletter } from "./newsletter";
 import { getUserSettingsByUserId } from "./user-settings";
+import { NewsletterSchema, type GeneratedNewsletter } from "@/lib/newsletter/types";
 
 // ============================================
 // NEWSLETTER GENERATION ACTIONS
 // ============================================
 
-/**
- * Newsletter generation result schema
- *
- * Defines the structure of AI-generated newsletters.
- * The AI SDK validates responses against this schema.
- */
- export const NewsletterSchema = z.object({
-  suggestedTitles: z.array(z.string()).length(5),
-  suggestedSubjectLines: z.array(z.string()).length(5),
-  body: z.string(),
-  topAnnouncements: z.array(z.string()).length(5),
-  additionalInfo: z.string().optional(),
-});
-
-export type GeneratedNewsletter = z.infer<typeof NewsletterSchema>;
+// Schema and type moved to lib/newsletter/schema to satisfy Next.js server action export constraints.
 
 /**
  * Generates a newsletter with AI streaming

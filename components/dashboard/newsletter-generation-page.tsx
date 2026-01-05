@@ -5,13 +5,13 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
-import { z } from "zod";
+// zod types not needed directly; use GeneratedNewsletter type
 import { Button } from "@/components/ui/button";
+import { saveGeneratedNewsletter } from "@/actions/generate-newsletter";
 import {
-  type GeneratedNewsletter,
-  saveGeneratedNewsletter,
   NewsletterSchema,
-} from "@/actions/generate-newsletter";
+  type GeneratedNewsletter,
+} from "@/lib/newsletter/types";
 import {
   Card,
   CardContent,
@@ -22,7 +22,7 @@ import {
 import { NewsletterDisplay } from "./newsletter-display";
 import { NewsletterLoadingCard } from "./newsletter-loading-card";
 
-type NewsletterObject = z.infer<typeof NewsletterSchema>;
+type NewsletterObject = GeneratedNewsletter;
 
 /**
  * Newsletter Generation Page
