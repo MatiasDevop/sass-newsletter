@@ -1,6 +1,7 @@
 "use server";
 
-import { openai } from "@ai-sdk/openai";
+//import { openai } from "@ai-sdk/openai";
+import { createOpenAI } from "@ai-sdk/openai"; // Import the flexible OpenAI provider creator
 import { streamObject } from "ai";
 import { checkIsProUser, getCurrentUser } from "@/lib/auth/helpers";
 import {
@@ -57,9 +58,15 @@ export async function generateNewsletterStream(params: {
     settings,
   });
 
+  // Configure OpenRouter as the provider (replace with your API key)
+  const openRouter = createOpenAI({
+    baseURL: process.env.OPENROUTER_API_BASE_URL,
+    apiKey: process.env.OPENROUTER_API_KEY, // Add this to your .env file
+  });
+
   // Generate newsletter using AI with streaming for real-time updates
   const { partialObjectStream } = await streamObject({
-    model: openai("gpt-4o"),
+    model: openRouter("tngtech/deepseek-r1t2-chimera:free"),
     schema: NewsletterSchema,
     prompt,
   });

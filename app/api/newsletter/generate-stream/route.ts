@@ -1,6 +1,6 @@
 
 import type { NextRequest } from "next/server";
-import { openai } from "@ai-sdk/openai";
+import { createOpenAI, openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
 import { getUserSettingsByUserId } from "@/actions/user-settings";
 import { getCurrentUser } from "@/lib/auth/helpers";
@@ -65,9 +65,14 @@ export async function POST(req: NextRequest) {
       settings,
     });
 
+    // Configure OpenRouter as the provider (replace with your API key)
+    const openRouter = createOpenAI({
+      baseURL: process.env.OPENROUTER_API_BASE_URL,
+      apiKey: process.env.OPENROUTER_API_KEY, // Add this to your .env file
+    });
     // Stream newsletter generation with AI SDK
     const result = streamObject({
-      model: openai("gpt-4o"),
+      model: openRouter("tngtech/deepseek-r1t2-chimera:free"),
       schema: NewsletterSchema,
       prompt,
       onFinish: async () => {
