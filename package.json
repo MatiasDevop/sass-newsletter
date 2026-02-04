@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
@@ -13,6 +13,7 @@
     "coverage": "vitest run --coverage",
     "e2e": "playwright test -c e2e/playwright/playwright.config.ts",
     "e2e:headed": "playwright test -c e2e/playwright/playwright.config.ts --headed",
+    "e2e:headed:attach": "playwright test -c e2e/playwright/playwright.attach.config.ts --headed",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
