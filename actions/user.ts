@@ -34,10 +34,11 @@ export async function getUserByClerkId(clerkUserId: string) {
 export async function upsertUserFromClerk(clerkUserId: string) {
   return wrapDatabaseOperation(async () => {
     // Try to find existing user
+    console.log("Checking for existing user with Clerk ID:", clerkUserId);
     const existingUser = await prisma.user.findUnique({
       where: { clerkUserId },
     });
-
+    console.log("Existing user found:", existingUser);
     if (existingUser) {
       // Update timestamp for existing user
       return await prisma.user.update({
@@ -49,6 +50,7 @@ export async function upsertUserFromClerk(clerkUserId: string) {
     }
 
     // Create new user if doesn't exist
+    console.log("No existing user found. Creating new user with Clerk ID:", clerkUserId);
     return await prisma.user.create({
       data: {
         clerkUserId,
