@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { signInViaClerk, signOut } from "./helpers/auth";
 
 // End-to-end auth flow checks for signed-out users.
 // These tests verify that protected routes are guarded by Clerk middleware
@@ -34,5 +35,32 @@ test.describe("auth flow (signed-out)", () => {
     await expect(page.locator("body")).toContainText(/get started/i, {
       timeout: 30000,
     });
+  });
+});
+
+// Additional auth checks for signed-in users using shared helper.
+test.describe("auth flow (signed-in)", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.context().clearCookies();
+    await page.addInitScript(() => {
+      try {
+        window.localStorage?.clear();
+        window.sessionStorage?.clear();
+      } catch {}
+    });
+  });
+
+  test.afterEach(async ({ page }) => {
+    await signOut(page);
+  });
+
+  test("allows access to /dashboard when signed in", async ({ page }) => {
+    const canAuth = await signInViaClerk(page);
+    if (!canAuth) {
+      test.skip(true, "Missing E2E_EMAIL/E2E_PASSWORD env for signed-in tests");
+    }
+
+    await page.goto("/dashboard", { waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible({ timeout: 30000 });
   });
 });

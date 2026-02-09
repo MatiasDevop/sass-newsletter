@@ -1,7 +1,12 @@
+import "dotenv/config";
 import { defineConfig } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
 
 // Use a dedicated test port to avoid local conflicts.
 const BASE_URL = process.env.E2E_BASE_URL || "http://localhost:3001";
+const STORAGE_PATH = path.join("e2e", ".auth", "state.json");
+const HAS_STORAGE = fs.existsSync(STORAGE_PATH);
 
 export default defineConfig({
   testDir: "../",
@@ -9,6 +14,7 @@ export default defineConfig({
     baseURL: BASE_URL,
     browserName: "chromium",
     headless: true,
+    storageState: HAS_STORAGE ? STORAGE_PATH : undefined,
     // Capture artifacts useful for debugging and reports
     trace: "on-first-retry",
     video: "retain-on-failure",
