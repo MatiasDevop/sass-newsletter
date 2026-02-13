@@ -28,7 +28,10 @@ test.describe("auth flow (signed-out)", () => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const bodyText = await page.locator("body").innerText();
     if (/internal server error/i.test(bodyText)) {
-      test.skip(true, "Homepage returned 500; likely missing env or auth config");
+      test.skip(
+        true,
+        "Homepage returned 500; likely missing env or auth config",
+      );
     }
 
     // The landing CTA renders a SignInButton labeled "Get Started" for signed-out users.
@@ -61,6 +64,8 @@ test.describe("auth flow (signed-in)", () => {
     }
 
     await page.goto("/dashboard", { waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible({ timeout: 30000 });
+    await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible(
+      { timeout: 30000 },
+    );
   });
 });

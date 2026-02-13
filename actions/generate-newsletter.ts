@@ -11,7 +11,10 @@ import {
 import { prepareFeedsAndArticles } from "@/lib/rss/feed-refresh";
 import { createNewsletter } from "./newsletter";
 import { getUserSettingsByUserId } from "./user-settings";
-import { NewsletterSchema, type GeneratedNewsletter } from "@/lib/newsletter/types";
+import {
+  NewsletterSchema,
+  type GeneratedNewsletter,
+} from "@/lib/newsletter/types";
 
 // ============================================
 // NEWSLETTER GENERATION ACTIONS

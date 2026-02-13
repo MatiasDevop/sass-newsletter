@@ -22,7 +22,10 @@ export async function signInViaClerk(page: Page): Promise<boolean> {
   } catch {}
 
   // Fresh state for login attempts
-  await page.context().clearCookies().catch(() => {});
+  await page
+    .context()
+    .clearCookies()
+    .catch(() => {});
   await page.addInitScript(() => {
     try {
       window.localStorage?.clear();
@@ -31,7 +34,7 @@ export async function signInViaClerk(page: Page): Promise<boolean> {
   });
 
   await page.goto("/sign-in", { waitUntil: "domcontentloaded" });
-  
+
   // Detect Clerk iframe if present and scope interactions inside it.
   const iframes = page.locator("iframe");
   const useFrame = (await iframes.count()) > 0;
@@ -40,7 +43,9 @@ export async function signInViaClerk(page: Page): Promise<boolean> {
   // Fallback: if no iframe on /sign-in, try the homepage CTA which opens a Clerk modal
   if (!useFrame) {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    const getStarted = page.getByRole("button", { name: /get started|sign in|log in/i });
+    const getStarted = page.getByRole("button", {
+      name: /get started|sign in|log in/i,
+    });
     if ((await getStarted.count()) > 0) {
       await getStarted.first().click();
       await page.waitForLoadState("domcontentloaded");
@@ -64,7 +69,7 @@ export async function signInViaClerk(page: Page): Promise<boolean> {
   }
   if ((await emailInput.count()) === 0) {
     emailInput = scope.locator(
-      'input[type="email"], input[name="email"], input[name="identifier"], input[autocomplete="email"]'
+      'input[type="email"], input[name="email"], input[name="identifier"], input[autocomplete="email"]',
     );
   }
   if ((await emailInput.count()) === 0) {
@@ -85,7 +90,7 @@ export async function signInViaClerk(page: Page): Promise<boolean> {
   }
   if ((await passwordInput.count()) === 0) {
     passwordInput = scope.locator(
-      'input[type="password"], input[name="password"], input[autocomplete="current-password"]'
+      'input[type="password"], input[name="password"], input[autocomplete="current-password"]',
     );
   }
   if ((await passwordInput.count()) === 0) {
@@ -95,7 +100,9 @@ export async function signInViaClerk(page: Page): Promise<boolean> {
   await passwordInput.first().fill(password);
 
   // Submit
-  const submitBtn = scope.getByRole("button", { name: /sign in|continue|log in|submit|verify/i });
+  const submitBtn = scope.getByRole("button", {
+    name: /sign in|continue|log in|submit|verify/i,
+  });
   if ((await submitBtn.count()) > 0) {
     await submitBtn.first().click();
   } else {
@@ -117,7 +124,9 @@ export async function signOut(page: Page): Promise<void> {
   try {
     // Attempt Clerk sign-out route if present
     await page.goto("/sign-out", { waitUntil: "domcontentloaded" });
-    const btn = page.getByRole("button", { name: /sign out|log out|continue/i }).first();
+    const btn = page
+      .getByRole("button", { name: /sign out|log out|continue/i })
+      .first();
     await btn.click({ timeout: 3000 }).catch(() => {});
     await page.waitForLoadState("domcontentloaded");
   } catch {}

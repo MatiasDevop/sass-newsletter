@@ -48,7 +48,7 @@ export function NewsletterHistoryView({
   const handleDelete = () => {
     const title = newsletter.suggestedTitles[0] || "this newsletter";
     const confirmed = window.confirm(
-      `Are you sure you want to delete "${title}"? This action cannot be undone.`
+      `Are you sure you want to delete "${title}"? This action cannot be undone.`,
     );
 
     if (!confirmed) return;
@@ -134,7 +134,7 @@ export function NewsletterHistoryView({
                         month: "short",
                         day: "numeric",
                         year: "numeric",
-                      }
+                      },
                     )}{" "}
                     -{" "}
                     {new Date(newsletter.endDate).toLocaleDateString("en-US", {

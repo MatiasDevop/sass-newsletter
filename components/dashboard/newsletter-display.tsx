@@ -66,7 +66,7 @@ export function NewsletterDisplay({
       "",
       formatSection(
         "SUBJECT LINE OPTIONS",
-        newsletter.suggestedSubjectLines ?? []
+        newsletter.suggestedSubjectLines ?? [],
       ),
       "",
       "NEWSLETTER BODY:",

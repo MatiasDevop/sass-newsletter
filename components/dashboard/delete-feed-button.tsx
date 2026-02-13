@@ -17,7 +17,7 @@ export function DeleteFeedButton({ feedId, feedTitle }: DeleteFeedButtonProps) {
   const handleDelete = async () => {
     if (
       !confirm(
-        `Are you sure you want to delete "${feedTitle}"? This will also delete all associated articles.`
+        `Are you sure you want to delete "${feedTitle}"? This will also delete all associated articles.`,
       )
     ) {
       return;

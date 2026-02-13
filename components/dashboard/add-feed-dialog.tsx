@@ -53,7 +53,7 @@ export function AddFeedDialog({
         toast.error(
           isPro
             ? "Feed limit reached"
-            : "Starter plan limited to 3 feeds. Upgrade to Pro for unlimited feeds."
+            : "Starter plan limited to 3 feeds. Upgrade to Pro for unlimited feeds.",
         );
         return;
       }
@@ -69,7 +69,7 @@ export function AddFeedDialog({
         toast.warning(`Feed added but: ${result.error}`);
       } else {
         toast.success(
-          `Feed added successfully! ${result.articlesCreated} articles imported.`
+          `Feed added successfully! ${result.articlesCreated} articles imported.`,
         );
       }
 
@@ -79,7 +79,7 @@ export function AddFeedDialog({
     } catch (error) {
       console.error("Failed to add feed:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to add RSS feed"
+        error instanceof Error ? error.message : "Failed to add RSS feed",
       );
     } finally {
       setIsAdding(false);

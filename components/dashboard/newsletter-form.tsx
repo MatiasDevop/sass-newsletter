@@ -46,7 +46,7 @@ export function NewsletterForm({ feeds }: NewsletterFormProps) {
     setSelectedFeeds((prev) =>
       prev.includes(feedId)
         ? prev.filter((id) => id !== feedId)
-        : [...prev, feedId]
+        : [...prev, feedId],
     );
   };
 

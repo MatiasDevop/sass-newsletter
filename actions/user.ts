@@ -50,7 +50,10 @@ export async function upsertUserFromClerk(clerkUserId: string) {
     }
 
     // Create new user if doesn't exist
-    console.log("No existing user found. Creating new user with Clerk ID:", clerkUserId);
+    console.log(
+      "No existing user found. Creating new user with Clerk ID:",
+      clerkUserId,
+    );
     return await prisma.user.create({
       data: {
         clerkUserId,

@@ -76,9 +76,7 @@ export async function getUserSettingsByUserId(userId: string) {
 /**
  * Creates or updates user settings for the authenticated user
  */
-export async function upsertUserSettings(
-  data: UserSettingsInput
-) {
+export async function upsertUserSettings(data: UserSettingsInput) {
   try {
     const { userId } = await auth();
     if (!userId) {

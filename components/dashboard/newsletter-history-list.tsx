@@ -44,13 +44,13 @@ export function NewsletterHistoryList({
   const handleDelete = (
     e: React.MouseEvent,
     newsletterId: string,
-    newsletterTitle: string
+    newsletterTitle: string,
   ) => {
     e.preventDefault();
     e.stopPropagation();
 
     const confirmed = window.confirm(
-      `Are you sure you want to delete "${newsletterTitle}"? This action cannot be undone.`
+      `Are you sure you want to delete "${newsletterTitle}"? This action cannot be undone.`,
     );
 
     if (!confirmed) return;
@@ -143,7 +143,7 @@ export function NewsletterHistoryList({
                         {
                           month: "short",
                           day: "numeric",
-                        }
+                        },
                       )}{" "}
                       -{" "}
                       {new Date(newsletter.endDate).toLocaleDateString(
@@ -151,7 +151,7 @@ export function NewsletterHistoryList({
                         {
                           month: "short",
                           day: "numeric",
-                        }
+                        },
                       )}
                     </Badge>
                   </div>

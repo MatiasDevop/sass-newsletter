@@ -95,7 +95,7 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
 
   const handleChange = (
     field: keyof UserSettingsInput,
-    value: string | string[]
+    value: string | string[],
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -114,7 +114,7 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
   const handleRemoveTag = (tagToRemove: string) => {
     handleChange(
       "defaultTags",
-      formData.defaultTags?.filter((tag) => tag !== tagToRemove) || []
+      formData.defaultTags?.filter((tag) => tag !== tagToRemove) || [],
     );
   };
 

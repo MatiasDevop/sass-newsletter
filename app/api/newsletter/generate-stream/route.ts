@@ -1,4 +1,3 @@
-
 import type { NextRequest } from "next/server";
 import { createOpenAI, openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
@@ -12,7 +11,6 @@ import { prepareFeedsAndArticles } from "@/lib/rss/feed-refresh";
 import { NewsletterSchema } from "@/lib/newsletter/types";
 
 export const maxDuration = 300; // 5 minutes for Vercel Pro
-
 
 /**
  * POST /api/newsletter/generate-stream

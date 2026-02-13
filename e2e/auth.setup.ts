@@ -16,7 +16,9 @@ test.describe("auth setup (manual or env)", () => {
 
     // Wait up to 90s for dashboard heading to appear (allows manual login in headed/UI mode)
     try {
-      await page.getByRole("heading", { name: /dashboard/i }).waitFor({ timeout: 90_000 });
+      await page
+        .getByRole("heading", { name: /dashboard/i })
+        .waitFor({ timeout: 90_000 });
     } catch {
       // If heading didn't appear, bail out for now
       test.skip(true, "Dashboard not reached; login may be required");
