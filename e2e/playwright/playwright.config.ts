@@ -1,7 +1,7 @@
 import "dotenv/config";
-import { defineConfig } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import { defineConfig } from "@playwright/test";
 
 // Use a dedicated test port to avoid local conflicts.
 const BASE_URL = process.env.E2E_BASE_URL || "http://localhost:3001";

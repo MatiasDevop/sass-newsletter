@@ -1,8 +1,9 @@
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 async function CTAButtons() {
   const { has, userId } = await auth(); // Clerk Billing api
   const hasPaidPlan =

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { signInViaClerk, signOut } from "./helpers/auth";
 
 // End-to-end auth flow checks for signed-out users.

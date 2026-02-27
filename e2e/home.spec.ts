@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 // Basic smoke test for the homepage hero section (public content)
 test("homepage shows hero headline", async ({ page }) => {

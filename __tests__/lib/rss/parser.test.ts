@@ -1,10 +1,10 @@
-import { describe, it, expect } from "vitest";
-import {
-  extractFeedMetadata,
-  extractArticles,
-} from "@/lib/rss/parser";
+import type Parser from "rss-parser";
+import { describe, expect, it } from "vitest";
+import { extractArticles, extractFeedMetadata } from "@/lib/rss/parser";
 
-function makeFeed(overrides: any = {}) {
+type TestFeed = Parser.Output<unknown>;
+
+function makeFeed(overrides: Partial<TestFeed> = {}): TestFeed {
   return {
     title: "Example Feed",
     description: "Desc",
@@ -12,7 +12,7 @@ function makeFeed(overrides: any = {}) {
     image: { url: "https://example.com/logo.png" },
     items: [],
     ...overrides,
-  } as any;
+  } as TestFeed;
 }
 
 describe("rss parser utilities", () => {
@@ -39,7 +39,7 @@ describe("rss parser utilities", () => {
             123 as unknown as string, // unexpected formats are skipped
           ],
           enclosure: { url: "https://example.com/img.jpg", type: "image/jpeg" },
-        },
+        } as unknown as Parser.Item,
       ],
     });
 

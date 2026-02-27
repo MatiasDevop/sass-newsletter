@@ -5,13 +5,9 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
+import { saveGeneratedNewsletter } from "@/actions/generate-newsletter";
 // zod types not needed directly; use GeneratedNewsletter type
 import { Button } from "@/components/ui/button";
-import { saveGeneratedNewsletter } from "@/actions/generate-newsletter";
-import {
-  NewsletterSchema,
-  type GeneratedNewsletter,
-} from "@/lib/newsletter/types";
 import {
   Card,
   CardContent,
@@ -19,6 +15,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  type GeneratedNewsletter,
+  NewsletterSchema,
+} from "@/lib/newsletter/types";
 import { NewsletterDisplay } from "./newsletter-display";
 import { NewsletterLoadingCard } from "./newsletter-loading-card";
 

@@ -24,6 +24,22 @@ interface RssCategoryObject {
 type RssCategory = string | RssCategoryObject;
 
 /**
+ * Typed extensions for fields commonly present in RSS feeds
+ * but not always included in rss-parser base typings.
+ */
+type FeedWithOptionalLanguage = Parser.Output<unknown> & {
+  language?: string;
+};
+
+type ItemWithOptionalFields = Parser.Item & {
+  "content:encoded"?: string;
+  description?: string;
+  summary?: string;
+  author?: string;
+  category?: RssCategory[];
+};
+
+/**
  * Normalizes categories from various RSS formats to string array
  * Handles both simple string categories and XML-parsed category objects
  *
@@ -103,7 +119,7 @@ export async function parseFeedUrl(url: string) {
 export function extractFeedMetadata(
   feed: Parser.Output<unknown>,
 ): FeedMetadata {
-  const feedAny = feed as any;
+  const feedAny = feed as FeedWithOptionalLanguage;
   return {
     title: feed.title || "Untitled Feed",
     description: feed.description,
@@ -122,7 +138,7 @@ export function extractArticles(
 ): ArticleData[] {
   return feed.items.map((item) => {
     // Type assertion for fields not in Parser.Item type definition
-    const itemAny = item as any;
+    const itemAny = item as ItemWithOptionalFields;
 
     // Use guid if available, fallback to link for deduplication
     const guid = item.guid || item.link || `${feedId}-${item.title}`;

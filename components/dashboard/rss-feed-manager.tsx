@@ -25,11 +25,13 @@ interface RssFeed {
 }
 
 export async function RssFeedManager() {
-  const { userId, has } = await auth();
+  const { userId, has, redirectToSignIn } = await auth();
   const isPro = await has({ plan: "pro" });
   const feedLimit = isPro ? Infinity : 3;
 
-  const user = await upsertUserFromClerk(userId!);
+  if (!userId) return redirectToSignIn();
+
+  const user = await upsertUserFromClerk(userId);
   const feeds = (await getRssFeedsByUserId(user.id)) as RssFeed[];
 
   return (

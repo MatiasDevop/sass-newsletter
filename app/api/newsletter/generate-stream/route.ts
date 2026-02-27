@@ -1,14 +1,14 @@
-import type { NextRequest } from "next/server";
-import { createOpenAI, openai } from "@ai-sdk/openai";
+import { createOpenAI } from "@ai-sdk/openai";
 import { streamObject } from "ai";
+import type { NextRequest } from "next/server";
 import { getUserSettingsByUserId } from "@/actions/user-settings";
 import { getCurrentUser } from "@/lib/auth/helpers";
 import {
   buildArticleSummaries,
   buildNewsletterPrompt,
 } from "@/lib/newsletter/prompt-builder";
-import { prepareFeedsAndArticles } from "@/lib/rss/feed-refresh";
 import { NewsletterSchema } from "@/lib/newsletter/types";
+import { prepareFeedsAndArticles } from "@/lib/rss/feed-refresh";
 
 export const maxDuration = 300; // 5 minutes for Vercel Pro
 

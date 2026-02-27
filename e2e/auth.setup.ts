@@ -1,6 +1,6 @@
-import { test } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
+import { test } from "@playwright/test";
 
 const STATE_PATH = path.join("e2e", ".auth", "state.json");
 

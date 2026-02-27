@@ -1,8 +1,12 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   buildArticleSummaries,
   buildNewsletterPrompt,
 } from "@/lib/newsletter/prompt-builder";
+
+type ArticleInput = Parameters<typeof buildArticleSummaries>[0][number];
+type PromptParams = Parameters<typeof buildNewsletterPrompt>[0];
+type PromptSettings = NonNullable<PromptParams["settings"]>;
 
 describe("newsletter prompt builder", () => {
   it("builds article summaries with fallback and numbering", () => {
@@ -27,9 +31,9 @@ describe("newsletter prompt builder", () => {
         pubDate: null,
         link: "https://example.com/3",
       },
-    ];
+    ] satisfies ArticleInput[];
 
-    const out = buildArticleSummaries(articles as any);
+    const out = buildArticleSummaries(articles);
     expect(out).toContain('1. "First Post"');
     expect(out).toContain('2. "Second Post"');
     expect(out).toContain('3. "Third Post"');
@@ -41,57 +45,57 @@ describe("newsletter prompt builder", () => {
   });
 
   it("includes settings, user instructions, and conditional requirements", () => {
+    const settings = {
+      newsletterName: "AI Weekly",
+      description: "Updates in AI",
+      targetAudience: "Engineers",
+      defaultTone: "Professional",
+      brandVoice: "Confident",
+      companyNaeme: "Acme AI",
+      industry: "Technology",
+      senderName: "Jane Doe",
+      senderEmail: "jane@example.com",
+      defaultTags: ["AI", "ML"],
+      disclaimerText: "Not investment advice.",
+      customFooter: "Subscribe for more.",
+      id: "",
+      userId: "",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } satisfies PromptSettings;
+
     const params = {
       startDate: new Date("2025-01-01"),
       endDate: new Date("2025-01-31"),
-      articleSummaries: "1. \"A\"\n",
+      articleSummaries: '1. "A"\n',
       articleCount: 1,
       userInput: "Focus on AI ethics",
-      settings: {
-        newsletterName: "AI Weekly",
-        description: "Updates in AI",
-        targetAudience: "Engineers",
-        defaultTone: "Professional",
-        brandVoice: "Confident",
-        companyNaeme: "Acme AI",
-        industry: "Technology",
-        senderName: "Jane Doe",
-        senderEmail: "jane@example.com",
-        defaultTags: ["AI", "ML"],
-        disclaimerText: "Not investment advice.",
-        customFooter: "Subscribe for more.",
-      } as any,
-    };
+      settings,
+    } satisfies PromptParams;
 
     const prompt = buildNewsletterPrompt(params);
 
-    // Date range and article count
     expect(prompt).toContain("DATE RANGE:");
     expect(prompt).toContain("ARTICLES (1 total):");
-
-    // Settings context appears
     expect(prompt).toContain("NEWSLETTER SETTINGS:");
     expect(prompt).toContain("Newsletter Name: AI Weekly");
     expect(prompt).toContain("Brand Voice: Confident");
     expect(prompt).toContain("Tags: AI, ML");
-
-    // User instructions section
     expect(prompt).toContain("CRITICAL USER INSTRUCTIONS");
     expect(prompt).toContain("Focus on AI ethics");
-
-    // Requirements and important notes should reflect disclaimer and footer
     expect(prompt).toMatch(/include the required disclaimer text/i);
     expect(prompt).toMatch(/include the required footer content/i);
   });
 
   it("omits optional sections when settings and input are absent", () => {
-    const prompt = buildNewsletterPrompt({
+    const params = {
       startDate: new Date("2025-02-01"),
       endDate: new Date("2025-02-28"),
       articleSummaries: "",
       articleCount: 0,
-    } as any);
+    } satisfies PromptParams;
 
+    const prompt = buildNewsletterPrompt(params);
     expect(prompt).not.toContain("NEWSLETTER SETTINGS:");
     expect(prompt).not.toContain("CRITICAL USER INSTRUCTIONS");
   });

@@ -10,8 +10,11 @@ import {
 import { NewsletterForm } from "./newsletter-form";
 
 export async function NewsletterGenerator() {
-  const { userId } = await auth();
-  const user = await upsertUserFromClerk(userId!);
+  const { userId, redirectToSignIn } = await auth();
+
+  if (!userId) return redirectToSignIn();
+
+  const user = await upsertUserFromClerk(userId);
   const feeds = await getRssFeedsByUserId(user.id);
 
   if (feeds.length === 0) {
