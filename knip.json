@@ -1,0 +1,27 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "app/**/{page,layout,route,loading,error,not-found,template,default}.{ts,tsx}",
+    "actions/**/*.{ts,tsx}",
+    "components/**/*.{ts,tsx}",
+    "lib/**/*.{ts,tsx}",
+    "e2e/playwright/*.ts",
+    "e2e/**/*.spec.ts",
+    "e2e/auth.setup.ts",
+    "__tests__/**/*.{ts,tsx}"
+  ],
+  "project": [
+    "**/*.{ts,tsx,mjs}",
+    "!coverage/**",
+    "!playwright-report/**",
+    "!test-results/**",
+    "!.next/**"
+  ],
+  "ignoreExportsUsedInFile": true,
+  "ignoreDependencies": [
+    "@tailwindcss/typography",
+    "tailwindcss",
+    "tw-animate-css"
+  ],
+  "tags": ["-lintignore"]
+}
