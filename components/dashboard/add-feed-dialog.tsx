@@ -39,51 +39,51 @@ export function AddFeedDialog({
   const [newFeedUrl, setNewFeedUrl] = React.useState("");
   const [isAdding, setIsAdding] = React.useState(false);
 
-  const handleAddFeed = async () => {
+  const handleAddFeed = () => {
     if (!newFeedUrl.trim()) {
       toast.error("Please enter a valid URL");
       return;
     }
 
-    try {
-      setIsAdding(true);
-
-      // Check feed limit
-      if (currentFeedCount >= feedLimit) {
-        toast.error(
-          isPro
-            ? "Feed limit reached"
-            : "Starter plan limited to 3 feeds. Upgrade to Pro for unlimited feeds.",
-        );
-        return;
-      }
-
-      if (!userId) {
-        throw new Error("Not authenticated");
-      }
-
-      const user = await upsertUserFromClerk(userId);
-      const result = await validateAndAddFeed(user.id, newFeedUrl.trim());
-
-      if (result.error) {
-        toast.warning(`Feed added but: ${result.error}`);
-      } else {
-        toast.success(
-          `Feed added successfully! ${result.articlesCreated} articles imported.`,
-        );
-      }
-
-      setNewFeedUrl("");
-      setIsOpen(false);
-      router.refresh(); // Refresh server component
-    } catch (error) {
-      console.error("Failed to add feed:", error);
+    if (currentFeedCount >= feedLimit) {
       toast.error(
-        error instanceof Error ? error.message : "Failed to add RSS feed",
+        isPro
+          ? "Feed limit reached"
+          : "Starter plan limited to 3 feeds. Upgrade to Pro for unlimited feeds.",
       );
-    } finally {
-      setIsAdding(false);
+      return;
     }
+
+    if (!userId) {
+      toast.error("Not authenticated");
+      return;
+    }
+
+    setIsAdding(true);
+
+    upsertUserFromClerk(userId)
+      .then((user) => validateAndAddFeed(user.id, newFeedUrl.trim()))
+      .then((result) => {
+        if (result.error) {
+          toast.warning(`Feed added but: ${result.error}`);
+        } else {
+          toast.success(
+            `Feed added successfully! ${result.articlesCreated} articles imported.`,
+          );
+        }
+
+        setNewFeedUrl("");
+        setIsOpen(false);
+        router.refresh();
+        setIsAdding(false);
+      })
+      .catch((error) => {
+        console.error("Failed to add feed:", error);
+        toast.error(
+          error instanceof Error ? error.message : "Failed to add RSS feed",
+        );
+        setIsAdding(false);
+      });
   };
 
   return (

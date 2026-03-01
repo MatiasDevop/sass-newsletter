@@ -323,7 +323,7 @@ function NewsletterSection({
         ) : (
           safeItems.map((item, index) => (
             <div
-              key={`${title}-${item.substring(0, 20)}-${index}`}
+              key={`${title}-${item}`}
               className="flex items-start gap-2 animate-in fade-in slide-in-from-left-2 duration-300"
             >
               <Badge
