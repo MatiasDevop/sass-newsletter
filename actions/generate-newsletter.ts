@@ -69,7 +69,7 @@ export async function generateNewsletterStream(params: {
 
   // Generate newsletter using AI with streaming for real-time updates
   const { partialObjectStream } = await streamObject({
-    model: openRouter("tngtech/deepseek-r1t2-chimera:free"),
+    model: openRouter("nvidia/nemotron-3-nano-30b-a3b:free"),
     schema: NewsletterSchema,
     prompt,
   });

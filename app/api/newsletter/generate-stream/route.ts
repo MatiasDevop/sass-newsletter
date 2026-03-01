@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     });
     // Stream newsletter generation with AI SDK
     const result = streamObject({
-      model: openRouter("tngtech/deepseek-r1t2-chimera:free"),
+      model: openRouter("nvidia/nemotron-3-nano-30b-a3b:free"),
       schema: NewsletterSchema,
       prompt,
       onFinish: async () => {
