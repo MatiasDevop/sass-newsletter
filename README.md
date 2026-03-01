@@ -34,3 +34,12 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Commnads for refactoring
+- `pnpm run format` - Format code using Prettier.
+- `pnpm run lint` - Lint code using ESLint.
+- `pnpm run test` - Run tests using Jest.
+- `pnpm run build` - Build the application for production.
+- `pnpm run start` - Start the production server.
+- `npx -y react-doctor@latest .` - Run React Doctor to analyze and fix common issues in your React project.
+- `npx -y react-doctor@latest . --verbose` - Run React Doctor with verbose output for more detailed information about issues and fixes in your React project.
