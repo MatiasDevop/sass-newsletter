@@ -1,9 +1,11 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports.biome": "explicit"
-    },
-    "[javascript][typescript][jsx][tsx]": {
-      "editor.defaultFormatter": "biomejs.biome"
-    }
-  }
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit"
+  },
+  "[javascript][typescript][jsx][tsx]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "snyk.advanced.organization": "701fc828-e33e-493a-ac7e-0685704678cc",
+  "snyk.advanced.autoSelectOrganization": true
+}
