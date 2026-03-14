@@ -54,12 +54,13 @@ export function NewsletterGenerationPage() {
   } | null = null;
 
   if (feedIds && startDate && endDate) {
+    const normalizedUserInput = userInput ?? undefined;
     try {
       params = {
         feedIds: JSON.parse(feedIds),
         startDate,
         endDate,
-        userInput: userInput || undefined,
+        userInput: normalizedUserInput,
       };
     } catch {
       params = null;
@@ -84,6 +85,8 @@ export function NewsletterGenerationPage() {
     hasStartedRef.current = true;
 
     const startGeneration = async () => {
+      let feedsToRefresh = 0;
+      let articlesFound = 0;
       try {
         // Get metadata for toast notifications
         const response = await fetch("/api/newsletter/prepare", {
@@ -94,34 +97,26 @@ export function NewsletterGenerationPage() {
 
         if (response.ok) {
           const data = await response.json();
-
-          // Show toast for feed refresh if needed
-          if (data.feedsToRefresh > 0) {
-            toast.info(
-              `Refreshing ${data.feedsToRefresh} feed${
-                data.feedsToRefresh > 1 ? "s" : ""
-              }...`,
-            );
-          }
-
-          // Show toast for article analysis
-          if (data.articlesFound > 0) {
-            toast.info(
-              `Analyzing ${data.articlesFound} article${
-                data.articlesFound > 1 ? "s" : ""
-              } from your feeds...`,
-            );
-            setArticlesCount(data.articlesFound);
-          }
+          feedsToRefresh = data.feedsToRefresh;
+          articlesFound = data.articlesFound;
         }
-
-        // Start AI generation
-        submit(params);
       } catch (error) {
         console.error("Failed to prepare newsletter:", error);
         // Start generation anyway
         submit(params);
       }
+      if (feedsToRefresh > 0) {
+        const feedWord = feedsToRefresh === 1 ? "feed" : "feeds";
+        toast.info(`Refreshing ${feedsToRefresh} ${feedWord}...`);
+      }
+      if (articlesFound > 0) {
+        const articleWord = articlesFound === 1 ? "article" : "articles";
+        toast.info(
+          `Analyzing ${articlesFound} ${articleWord} from your feeds...`,
+        );
+        setArticlesCount(articlesFound);
+      }
+      submit(params);
     };
 
     startGeneration();
