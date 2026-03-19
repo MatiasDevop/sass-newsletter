@@ -7,5 +7,5 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "snyk.advanced.organization": "701fc828-e33e-493a-ac7e-0685704678cc",
-  "snyk.advanced.autoSelectOrganization": false
+  "snyk.advanced.autoSelectOrganization": true
 }
